@@ -1,19 +1,22 @@
-'use client';
-import { useState } from 'react';
+'use client'
+import { useState } from 'react'
 
 export default function PricingPage() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
 
-  const startCheckout = async () => {
+  const startSubscription = async () => {
     try {
-      setLoading(true);
-      const res = await fetch('/api/checkout/create', { method: 'POST' });
-      const { url } = await res.json();
-      window.location.href = url;
+      setLoading(true)
+      const res = await fetch('/api/subscribe', { method: 'POST' })
+      const data = await res.json()
+      if (data.error) throw new Error(data.error)
+      window.location.href = data.url
+    } catch (err: any) {
+      alert(err.message || 'Checkout failed')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="max-w-xl space-y-6">
@@ -22,12 +25,13 @@ export default function PricingPage() {
         Unlock the ad-free experience & archives.
       </p>
       <button
-        onClick={startCheckout}
+        onClick={startSubscription}
         disabled={loading}
         className="rounded-xl bg-white px-5 py-3 font-semibold text-black disabled:opacity-60"
       >
         {loading ? 'Redirecting…' : 'Subscribe'}
       </button>
     </div>
-  );
+  )
 }
+
