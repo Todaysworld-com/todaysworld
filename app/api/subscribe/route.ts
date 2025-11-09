@@ -1,7 +1,7 @@
 // app/api/subscribe/route.ts
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2024-06-20" });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!,);
 
 // Hardcode your public origin to avoid bad envs breaking Stripe URLs
 const ORIGIN = "https://todaysworld.vercel.app";
