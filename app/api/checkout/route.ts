@@ -1,4 +1,6 @@
 // app/api/checkout/route.ts
+console.log("Using success_url:", "https://todaysworld.vercel.app/success?session_id={CHECKOUT_SESSION_ID}");
+
 export const runtime = "nodejs";
 
 import Stripe from "stripe";
