@@ -1,3 +1,5 @@
+import { noContent } from "../_cors";
+
 import { NextResponse } from "next/server";
 export async function GET() {
   return NextResponse.json({
@@ -5,5 +7,6 @@ export async function GET() {
     stripe_key_set: !!process.env.STRIPE_SECRET_KEY,
   });
 }
+export async function OPTIONS() { return noContent(); }
 
 

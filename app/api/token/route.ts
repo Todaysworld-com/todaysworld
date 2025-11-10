@@ -1,3 +1,5 @@
+import { noContent } from "../_cors";
+
 import { NextResponse } from "next/server";
 import { AccessToken } from "livekit-server-sdk";
 
@@ -16,3 +18,4 @@ export async function POST(req: Request) {
   });
   return NextResponse.json({ token: await at.toJwt() });
 }
+export async function OPTIONS() { return noContent(); }

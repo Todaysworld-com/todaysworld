@@ -1,4 +1,6 @@
 // app/api/tip/route.ts
+import { noContent } from "../_cors";
+
 export const runtime = "nodejs";
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
@@ -28,3 +30,4 @@ export async function POST() {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }
+export async function OPTIONS() { return noContent(); }

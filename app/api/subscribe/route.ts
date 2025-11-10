@@ -1,4 +1,6 @@
 // app/api/subscribe/route.ts
+import { noContent } from "../_cors";
+
 export const runtime = "nodejs";
 
 import { stripe } from "@/lib/stripe";
@@ -38,3 +40,4 @@ export async function POST() {
     return new Response(JSON.stringify({ error: e?.message ?? "Unknown error" }), { status: 500 });
   }
 }
+export async function OPTIONS() { return noContent(); }

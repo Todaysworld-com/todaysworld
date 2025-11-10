@@ -1,3 +1,6 @@
+import { noContent } from "../../_cors";
+
+
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { supabaseServer } from "@/lib/supabaseServer";
@@ -58,3 +61,4 @@ const supabase = await supabaseServer();
 
   return NextResponse.json({ received: true });
 }
+export async function OPTIONS() { return noContent(); }

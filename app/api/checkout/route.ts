@@ -1,3 +1,4 @@
+import { noContent } from "../_cors";
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { supabaseServer } from '@/lib/supabaseServer'
@@ -83,4 +84,5 @@ export async function POST() {
 
 }
 
+export async function OPTIONS() { return noContent(); }
 

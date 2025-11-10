@@ -1,30 +1,33 @@
-// app/api/buy-now/route.ts
-export const runtime = "nodejs";
-import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
-
-const SUCCESS = "https://todaysworld.vercel.app/success?session_id={CHECKOUT_SESSION_ID}";
-const CANCEL  = "https://todaysworld.vercel.app/pricing";
+import { supabaseAdmin } from "@/lib/supabase";
+import { okJson, noContent } from "../_cors";
 
 export async function POST() {
-  try {
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            unit_amount: 2500, // $25 buy-now slot
-            product_data: { name: "Buy-Now Mic Slot (50 minutes)" },
-          },
-          quantity: 1,
-        },
-      ],
-      success_url: SUCCESS,
-      cancel_url: CANCEL,
-    });
-    return NextResponse.json({ url: session.url });
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
-  }
+  const { data: state } = await supabaseAdmin
+    .from("seat_state")
+    .select("*")
+    .eq("id", 1)
+    .single();
+
+  const price = state?.current_price_cents ?? 500;
+
+  const session = await stripe.checkout.sessions.create({
+    mode: "payment",
+    line_items: [{
+      price_data: {
+        currency: "usd",
+        product_data: { name: "Today’s World Mic (10 min)" },
+        unit_amount: price,
+      },
+      quantity: 1,
+    }],
+    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/?success=1`,
+    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/?canceled=1`,
+    metadata: { type: "seat_buy" },
+  });
+
+  return okJson({ url: session.url });
 }
+
+export async function OPTIONS() { return noContent(); }
+
