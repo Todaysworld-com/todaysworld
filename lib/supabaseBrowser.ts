@@ -1,14 +1,13 @@
-// lib/supabaseServer.ts
-import { createClient } from '@supabase/supabase-js';
+// lib/supabaseBrowser.ts
+'use client'
 
-if (!process.env.NEXT_PUBLIC_SUPABASE_URL) throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL');
-if (!process.env.SUPABASE_SERVICE_ROLE_KEY) throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY');
+import { createBrowserClient } from '@supabase/ssr'
 
-export const supabaseServer = () =>
-  createClient(
+export const supabaseBrowser = () =>
+  createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!, // service role (server-only)
-    { auth: { persistSession: false } }
-  );
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
 
 
