@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { supabaseBrowser } from '@/lib/supabaseBrowser'
-import HlsPlayer from '@/components/HlsPlayer'
+import { supabaseBrowser } from '../lib/supabaseBrowser'
+import HlsPlayer from '../components/HlsPlayer'
 
 export default function Page() {
   const [seat, setSeat] = useState<any>(null)
@@ -9,13 +9,25 @@ export default function Page() {
 
   useEffect(() => {
     const sb = supabaseBrowser()
-    sb.from('seat_state').select('*').then(({ data }) => data?.length && setSeat(data[0]))
-    const ch = sb.channel('seat_state').on(
-      'postgres_changes',
-      { event: '*', schema: 'public', table: 'seat_state' },
-      p => setSeat(p.new)
-    ).subscribe()
-    return () => { void sb.removeChannel(ch) }
+
+    sb.from('seat_state')
+      .select('*')
+      .then(({ data }: { data: any[] | null }) => {
+        if (data?.length) setSeat(data[0])
+      })
+
+    const ch = sb
+      .channel('seat_state')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'seat_state' },
+        (p: { new: any }) => setSeat(p.new)
+      )
+      .subscribe()
+
+    return () => {
+      void sb.removeChannel(ch)
+    }
   }, [])
 
   async function buySeat() {
@@ -57,5 +69,3 @@ export default function Page() {
     </div>
   )
 }
-
-
