@@ -9,7 +9,8 @@ const ORIGIN = "https://todaysworld.vercel.app";
 export async function POST() {
   try {
     // get latest dynamic price
-    const sb = supabaseServer();
+   const sb = await supabaseServer();
+
     const { data, error } = await sb.from("seat_state").select("current_price_cents").limit(1).single();
     if (error) throw new Error(error.message);
 

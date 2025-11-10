@@ -2,12 +2,18 @@
   "name": "todaysworld",
   "version": "0.1.0",
   "private": true,
+
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "next lint"
   },
+  "engines": {
+    "node": ">=18.18 <23"
+  },
+
+
   "dependencies": {
     "@livekit/components-react": "^2.9.15",
     "@livekit/components-styles": "^1.1.6",

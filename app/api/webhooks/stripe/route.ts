@@ -26,8 +26,7 @@ export async function POST(req: NextRequest) {
     const userId = s.client_reference_id ?? null;
     const type = s.metadata?.type ?? "seat_buy";
     const message = s.metadata?.message ?? null;
-
-    const supabase = supabaseServer();
+const supabase = await supabaseServer();
 
     // 1) record transaction
     const tx = await supabase.from("transactions").insert({
