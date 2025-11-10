@@ -5,9 +5,9 @@ import { supabaseServer } from '@/lib/supabaseServer'
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 function getBaseUrl() {
-  const env = process.env.NEXT_PUBLIC_SITE_URL
-  return env && env.startsWith('http') ? env : 'https://todaysworld.vercel.app'
+  return 'https://todaysworld.vercel.app'
 }
+
 
 function assertIntCents(n: unknown): number {
   const v = Number(n)
