@@ -1,33 +1,26 @@
-// app/api/tip/route.ts
-import { noContent } from "../_cors";
-
-export const runtime = "nodejs";
-import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
+import { okJson, noContent } from "../_cors";
 
-const SUCCESS = "https://todaysworld.vercel.app/success?session_id={CHECKOUT_SESSION_ID}";
-const CANCEL  = "https://todaysworld.vercel.app/pricing";
+export async function POST(req: Request) {
+  const { amount_cents, message } = await req.json();
+  const safeMsg = (message || "").toString().slice(0, 140);
 
-export async function POST() {
-  try {
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            unit_amount: 200, // $2 tip
-            product_data: { name: "Tip for the Mic Holder" },
-          },
-          quantity: 1,
-        },
-      ],
-      success_url: SUCCESS,
-      cancel_url: CANCEL,
-    });
-    return NextResponse.json({ url: session.url });
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
-  }
+  const session = await stripe.checkout.sessions.create({
+    mode: "payment",
+    line_items: [{
+      price_data: {
+        currency: "usd",
+        product_data: { name: "Tip (Today’s World)" },
+        unit_amount: amount_cents,
+      },
+      quantity: 1,
+    }],
+    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/?tipped=1`,
+    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/?tip_canceled=1`,
+    metadata: { type: "tip", message: safeMsg },
+  });
+
+  return okJson({ url: session.url });
 }
+
 export async function OPTIONS() { return noContent(); }
