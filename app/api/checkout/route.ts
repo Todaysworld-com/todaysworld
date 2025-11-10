@@ -73,13 +73,14 @@ export async function POST() {
 
     if (!session.url) throw new Error('Invalid Stripe session URL')
     return NextResponse.json({ url: session.url })
-  } catch (err: any) {
-    console.error('Checkout error:', err)
-    return NextResponse.json(
-      { error: err?.message ?? 'Checkout failed' },
-      { status: 500 }
-    )
-  }
+} catch (err: any) {
+  console.error('Checkout error:', err)
+  return NextResponse.json(
+    { error: err?.message, type: err?.type, code: err?.code },
+    { status: 500 }
+  )
+}
+
 }
 
 
