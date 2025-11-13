@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 import { stripe } from "@/lib/stripe";
 import { okJson, noContent } from "../_cors";
 

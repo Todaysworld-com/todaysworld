@@ -1,9 +1,12 @@
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 import { noContent } from "../../_cors";
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { supabaseServer } from "@/lib/supabaseServer";
 
-export const runtime = "nodejs"; // ensures raw body support
+
 
 export async function POST(req: NextRequest) {
   const sig = req.headers.get("stripe-signature");

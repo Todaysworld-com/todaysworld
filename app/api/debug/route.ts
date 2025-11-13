@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 import { noContent } from "../_cors";
 
 import { NextResponse } from "next/server";

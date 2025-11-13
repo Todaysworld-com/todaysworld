@@ -1,4 +1,7 @@
 // app/api/subscribe/route.ts
+export const dynamic = 'force-dynamic';
+
+
 import { noContent } from "../_cors";
 
 export const runtime = "nodejs";
