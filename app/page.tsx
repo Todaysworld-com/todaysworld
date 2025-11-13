@@ -3,13 +3,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { supabaseBrowser } from '../lib/supabaseBrowser';
 import HlsPlayer from './components/HlsPlayer';
 
-// --- Helper for currency ---
 const fmtUSD = (cents?: number | null) =>
   cents == null
     ? '—'
     : new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cents / 100);
 
-// --- Types (quick)
 type SeatState = {
   id?: number;
   holder_name?: string | null;
@@ -22,48 +20,33 @@ export default function Page() {
   const [seat, setSeat] = useState<SeatState | null>(null);
   const [countdown, setCountdown] = useState<string>('—');
 
-  // Fallback demo stream if seat_state.hls_url is empty
   const fallbackSrc = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
   const videoSrc = useMemo(() => seat?.hls_url || fallbackSrc, [seat?.hls_url]);
 
-  // Load + realtime subscribe to seat_state
   useEffect(() => {
     const sb = supabaseBrowser();
-
     sb.from('seat_state')
       .select('*')
       .then(({ data }: { data: any[] | null }) => {
         if (data?.length) setSeat(data[0] as SeatState);
       });
-
     const ch = sb
       .channel('seat_state')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'seat_state' },
-        (p: { new: SeatState }) => setSeat(p.new)
-      )
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'seat_state' }, (p: { new: SeatState }) => setSeat(p.new))
       .subscribe();
-
-    return () => {
-      void sb.removeChannel(ch);
-    };
+    return () => { void sb.removeChannel(ch); };
   }, []);
 
-  // Countdown (derived from seat.expires_at)
   useEffect(() => {
-    if (!seat?.expires_at) {
-      setCountdown('—');
-      return;
-    }
-    const update = () => {
+    if (!seat?.expires_at) return setCountdown('—');
+    const tick = () => {
       const t = Math.max(0, (new Date(seat.expires_at!).getTime() - Date.now()) / 1000);
       const m = Math.floor(t / 60);
       const s = Math.floor(t % 60);
       setCountdown(`${m}:${s.toString().padStart(2, '0')}`);
     };
-    update();
-    const id = setInterval(update, 1000);
+    tick();
+    const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, [seat?.expires_at]);
 
@@ -76,11 +59,9 @@ export default function Page() {
     const t = await r.text();
     try {
       const j = JSON.parse(t);
-      if (j.error) return alert(j.error);
-      if (j.url) return (window.location.href = j.url);
-    } catch {
-      alert('Checkout failed: ' + t);
-    }
+      if (j.error) alert(j.error);
+      else if (j.url) window.location.href = j.url;
+    } catch { alert('Checkout failed: ' + t); }
   }
 
   async function tip(amount_cents = 500, message = '') {
@@ -92,70 +73,48 @@ export default function Page() {
     const t = await r.text();
     try {
       const j = JSON.parse(t);
-      if (j.error) return alert(j.error);
-      if (j.url) return (window.location.href = j.url);
-    } catch {
-      alert('Checkout failed: ' + t);
-    }
+      if (j.error) alert(j.error);
+      else if (j.url) window.location.href = j.url;
+    } catch { alert('Checkout failed: ' + t); }
   }
 
   return (
-    <main className="mx-auto max-w-5xl p-6 space-y-6">
+    <main className="mx-auto max-w-6xl px-4 py-6 space-y-6">
       <header className="space-y-1">
         <h1 className="text-3xl font-bold">The World’s Daily Message</h1>
-        <p className="text-neutral-300">
-          One message. Updated daily. The clean, ad-free experience.
-        </p>
+        <p className="text-neutral-400">One message. Updated daily. Clean, ad-free.</p>
       </header>
 
-      <section className="grid md:grid-cols-3 gap-4">
-        <div className="md:col-span-2 space-y-3 relative">
+      {/* Video + Chat side-by-side */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-5 items-start">
+        <div className="md:col-span-2 space-y-3">
           <HlsPlayer src={videoSrc} poster="/poster.jpg" />
-
-          <div className="flex items-center justify-between text-sm">
-            <div>
-              Holder: <b>{seat?.holder_name ?? '—'}</b>
-            </div>
-            <div>
-              Price: <b>{fmtUSD(seat?.current_price_cents ?? 500)}</b>
-            </div>
-            <div>
-              Ends in: <b>{countdown}</b>
-            </div>
+          <div className="flex flex-wrap items-center justify-between gap-3 text-sm border rounded-xl px-3 py-2">
+            <div>Holder: <b>{seat?.holder_name ?? '—'}</b></div>
+            <div>Price: <b>{fmtUSD(seat?.current_price_cents ?? 500)}</b></div>
+            <div>Ends in: <b>{countdown}</b></div>
           </div>
-
           <div className="flex gap-2">
-            <button
-              onClick={buySeat}
-              className="px-4 py-2 rounded-xl bg-black text-white"
-            >
-              Buy Mic
-            </button>
-            <button
-              onClick={() => tip(500)}
-              className="px-4 py-2 rounded-xl border"
-            >
-              Tip $5
-            </button>
-            <button
-              onClick={() => tip(1000)}
-              className="px-4 py-2 rounded-xl border"
-            >
-              Tip $10
-            </button>
+            <button onClick={buySeat} className="px-4 py-2 rounded-xl bg-black text-white">Buy Mic</button>
+            <button onClick={() => tip(500)} className="px-4 py-2 rounded-xl border">Tip $5</button>
+            <button onClick={() => tip(1000)} className="px-4 py-2 rounded-xl border">Tip $10</button>
           </div>
         </div>
-
-        <Chat />
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold">Live Chat</h2>
+          <Chat />
+        </div>
       </section>
 
-      <Wall />
+      <section className="space-y-2">
+        <h2 className="text-lg font-semibold">Wall of Holders</h2>
+        <Wall />
+      </section>
     </main>
   );
 }
 
-/* ---------------- Chat ---------------- */
-
+/* ---------- Chat ---------- */
 function Chat() {
   const [messages, setMessages] = useState<any[]>([]);
   const [username, setUsername] = useState<string>('');
@@ -164,7 +123,7 @@ function Chat() {
   useEffect(() => {
     const poll = async () => {
       const { messages } = await fetch('/api/chat-feed')
-        .then((r) => r.json())
+        .then(r => r.json())
         .catch(() => ({ messages: [] }));
       setMessages(messages ?? []);
     };
@@ -192,11 +151,7 @@ function Chat() {
           const isTip = !!m.is_tip;
           const color = m.color ?? (isTip ? '#d97706' : 'inherit');
           return (
-            <div
-              key={m.id}
-              className={`text-sm ${isTip ? 'font-bold' : ''}`}
-              style={{ color }}
-            >
+            <div key={m.id} className={`text-sm ${isTip ? 'font-bold' : ''}`} style={{ color }}>
               {isTip && <span className="mr-1">💸</span>}
               <span className="opacity-60">{m.username}:</span> {m.text}
             </div>
@@ -204,30 +159,17 @@ function Chat() {
         })}
       </div>
       <div className="mt-2 flex gap-2">
-        <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Name (optional)"
-          className="border rounded px-2 py-1 flex-1"
-        />
+        <input value={username} onChange={e => setUsername(e.target.value)} placeholder="Name (optional)" className="border rounded px-2 py-1 flex-1" />
       </div>
       <div className="mt-2 flex gap-2">
-        <input
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Say something…"
-          className="border rounded px-2 py-1 flex-1"
-        />
-        <button onClick={send} className="px-3 py-1 rounded bg-black text-white">
-          Send
-        </button>
+        <input value={text} onChange={e => setText(e.target.value)} placeholder="Say something…" className="border rounded px-2 py-1 flex-1" />
+        <button onClick={send} className="px-3 py-1 rounded bg-black text-white">Send</button>
       </div>
     </div>
   );
 }
 
-/* ---------------- Wall of Holders ---------------- */
-
+/* ---------- Wall ---------- */
 function Wall() {
   const [entries, setEntries] = useState<any[]>([]);
   useEffect(() => {
@@ -241,21 +183,20 @@ function Wall() {
     return () => clearInterval(id);
   }, []);
   return (
-    <section>
-      <h2 className="text-lg font-semibold mb-2">Wall of Holders</h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {entries.map((w: any) => (
-          <div key={w.id} className="border rounded-xl p-2">
-            <div className="text-sm font-medium">
-              {w.display_name ?? 'Holder'}
-            </div>
-            <div className="text-xs opacity-60">
-              {new Date(w.started_at).toLocaleString()}
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+      {entries.map((w: any) => (
+        <div key={w.id} className="border rounded-xl p-3">
+          <div className="text-sm font-medium">{w.display_name ?? 'Holder'}</div>
+          <div className="text-xs opacity-60">{new Date(w.started_at).toLocaleString()}</div>
+        </div>
+      ))}
+      {entries.length === 0 && (
+        <div className="col-span-full text-sm text-neutral-500 border rounded-xl p-4 text-center">
+          No holders yet — be the first! 🎤
+        </div>
+      )}
+    </div>
   );
 }
+
 
