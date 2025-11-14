@@ -43,3 +43,13 @@ body {
   opacity: 0.35;
   mix-blend-mode: multiply;
 }
+.triangles-rounded {
+  background-image:
+    linear-gradient(150deg, rgba(255,255,255,0.22) 12%, transparent 12%),
+    linear-gradient(210deg, rgba(255,255,255,0.22) 12%, transparent 12%),
+    linear-gradient(330deg, rgba(255,255,255,0.16) 12%, transparent 12%);
+  background-size: 40px 40px;
+  background-position: 0 0, 0 0, 0 0;
+  opacity: 0.35;
+  mix-blend-mode: soft-light;
+}

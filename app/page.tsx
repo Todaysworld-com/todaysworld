@@ -108,13 +108,14 @@ export default function Page() {
 
   return (
     <main className="relative min-h-screen overflow-hidden text-white">
-      {/* Tan LCD background + confetti lines */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        {/* solid LCD tan */}
-        <div className="absolute inset-0 bg-[#f7f1d7]" />
-        {/* confetti line texture */}
-        <div className="absolute inset-0 confetti-lines pointer-events-none" />
-      </div>
+      {/* Purple background + rounded triangle texture */}
+<div className="absolute inset-0 -z-10 overflow-hidden">
+  {/* solid purple */}
+  <div className="absolute inset-0 bg-[#9B82FF]" />
+  {/* triangles (rounded) texture */}
+  <div className="absolute inset-0 triangles-rounded pointer-events-none" />
+</div>
+
 
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 lg:flex-row lg:items-start lg:py-16">
         {/* LEFT: video + controls */}
