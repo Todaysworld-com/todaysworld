@@ -109,13 +109,12 @@ export default function Page() {
   return (
     <main className="relative min-h-screen overflow-hidden text-white">
       {/* Tan LCD background + confetti lines */}
-<div className="absolute inset-0 -z-10 overflow-hidden">
-  {/* solid LCD tan */}
-  <div className="absolute inset-0 bg-[#f7f1d7]" />
-  {/* confetti line texture */}
-  <div className="absolute inset-0 confetti-lines pointer-events-none" />
-</div>
-
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        {/* solid LCD tan */}
+        <div className="absolute inset-0 bg-[#f7f1d7]" />
+        {/* confetti line texture */}
+        <div className="absolute inset-0 confetti-lines pointer-events-none" />
+      </div>
 
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 lg:flex-row lg:items-start lg:py-16">
         {/* LEFT: video + controls */}
@@ -160,21 +159,21 @@ export default function Page() {
             <button
               onClick={buySeat}
               disabled={!!loadingAction}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-fuchsia-400 via-orange-300 to-yellow-300 px-7 py-3 text-sm font-semibold text-slate-900 shadow-[0_18px_50px_rgba(0,0,0,0.75)] transition-transform hover:-translate-y-[1px] disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[rgb(228,115,59)] px-7 py-3 text-sm font-semibold text-slate-900 shadow-[0_18px_50px_rgba(0,0,0,0.75)] transition-transform hover:-translate-y-[1px] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loadingAction === 'seat' ? 'Starting checkout…' : 'Take the Mic'}
             </button>
             <button
               onClick={() => tip(500)}
               disabled={!!loadingAction}
-              className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-xs font-medium text-neutral-50 shadow-[0_12px_35px_rgba(0,0,0,0.7)] transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center justify-center rounded-full border border-white/20 bg-[rgb(244,194,82)] px-5 py-2.5 text-xs font-medium text-black shadow-[0_12px_35px_rgba(0,0,0,0.7)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loadingAction === 'tip-500' ? 'Sending tip…' : 'Tip $5'}
             </button>
             <button
               onClick={() => tip(1000)}
               disabled={!!loadingAction}
-              className="inline-flex items-center justify-center rounded-full border border-amber-300/70 bg-amber-300/10 px-5 py-2.5 text-xs font-medium text-amber-100 shadow-[0_12px_35px_rgba(0,0,0,0.7)] transition hover:bg-amber-300/20 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center justify-center rounded-full border border-amber-300/70 bg-[rgb(152,210,93)] px-5 py-2.5 text-xs font-medium text-black shadow-[0_12px_35px_rgba(0,0,0,0.7)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loadingAction === 'tip-1000' ? 'Sending tip…' : 'Tip $10'}
             </button>
@@ -273,7 +272,7 @@ function Chat() {
         />
         <button
           onClick={send}
-          className="rounded-xl bg-gradient-to-r from-fuchsia-400 to-orange-300 px-3 py-1 text-xs font-semibold text-slate-900"
+          className="rounded-xl bg-[rgb(158,122,246)] px-3 py-1 text-xs font-semibold text-slate-900"
         >
           Send
         </button>
