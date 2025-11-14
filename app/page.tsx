@@ -108,15 +108,14 @@ export default function Page() {
 
   return (
     <main className="relative min-h-screen overflow-hidden text-white">
-      {/* Background color + swooshes */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        {/* base background like Bonnaroo lineup: deep purple night */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#060012] via-[#120024] to-[#05010a]" />
-        {/* soft swoosh shapes */}
-        <div className="absolute -top-40 -left-32 h-96 w-[32rem] rounded-[999px] bg-gradient-to-br from-fuchsia-500/60 via-orange-400/40 to-yellow-300/40 blur-3xl" />
-        <div className="absolute -bottom-40 -right-40 h-[26rem] w-[28rem] rounded-[999px] bg-gradient-to-tr from-cyan-400/50 via-purple-500/50 to-fuchsia-500/40 blur-3xl" />
-        <div className="absolute inset-0 opacity-25 noise-overlay" />
-      </div>
+      {/* Tan LCD background + confetti lines */}
+<div className="absolute inset-0 -z-10 overflow-hidden">
+  {/* solid LCD tan */}
+  <div className="absolute inset-0 bg-[#f7f1d7]" />
+  {/* confetti line texture */}
+  <div className="absolute inset-0 confetti-lines pointer-events-none" />
+</div>
+
 
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 lg:flex-row lg:items-start lg:py-16">
         {/* LEFT: video + controls */}
