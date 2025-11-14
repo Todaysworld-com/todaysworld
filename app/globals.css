@@ -24,27 +24,20 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
-/* --- Poster grain texture --- */
+
+/* WAVY POSTER SHAPES */
+.wave-1 { clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 90%); }
+.wave-2 { clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%); }
+.wave-3 { clip-path: polygon(0 0, 100% 12%, 100% 100%, 0 85%); }
+.wave-4 { clip-path: polygon(0 0, 100% 8%, 100% 100%, 0 92%); }
+.wave-5 { clip-path: polygon(0 0, 100% 15%, 100% 100%, 0 80%); }
+.wave-6 { clip-path: polygon(0 0, 100% 6%, 100% 100%, 0 94%); }
+.wave-7 { clip-path: polygon(0 0, 100% 14%, 100% 100%, 0 87%); }
+.wave-8 { clip-path: polygon(0 0, 100% 9%, 100% 100%, 0 91%); }
+
+/* Grain */
 .noise-overlay {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
   mix-blend-mode: soft-light;
 }
 
-/* --- Slow glow pulse --- */
-@keyframes pulse-slow {
-  0%, 100% { opacity: .4; transform: scale(1); }
-  50% { opacity: .8; transform: scale(1.06); }
-}
-.animate-pulse-slow {
-  animation: pulse-slow 8s ease-in-out infinite;
-}
-
-/* --- Rainbow halo wobble --- */
-@keyframes orbit {
-  0% { transform: translate(0,0); }
-  50% { transform: translate(10px,-14px); }
-  100% { transform: translate(0,0); }
-}
-.animate-orbit {
-  animation: orbit 16s ease-in-out infinite;
-}

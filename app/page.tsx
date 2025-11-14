@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { supabaseBrowser } from '../lib/supabaseBrowser';
 import HlsPlayer from './components/HlsPlayer';
 
-/* ---------- Helpers ---------- */
+/* ------------ Helpers ------------ */
 const fmtUSD = (cents?: number | null) =>
   cents == null
     ? '—'
@@ -30,7 +30,7 @@ export default function Page() {
   const fallback = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
   const videoSrc = useMemo(() => seat?.hls_url || fallback, [seat?.hls_url]);
 
-  /* ---------- REALTIME seat_state ---------- */
+  /* ----------------- Realtime seat_state ----------------- */
   useEffect(() => {
     const sb = supabaseBrowser();
 
@@ -48,7 +48,7 @@ export default function Page() {
     return () => void sb.removeChannel(ch);
   }, []);
 
-  /* ---------- Countdown ---------- */
+  /* ----------------- Countdown ----------------- */
   useEffect(() => {
     if (!seat?.expires_at) return setCountdown('—');
     const tick = () => {
@@ -65,7 +65,7 @@ export default function Page() {
     return () => clearInterval(id);
   }, [seat?.expires_at]);
 
-  /* ---------- Checkouts ---------- */
+  /* ----------------- Checkout ----------------- */
   async function buySeat() {
     try {
       setLoadingAction('seat');
@@ -104,87 +104,105 @@ export default function Page() {
   }
 
   /* ============================================================
-     UI
+     UI STARTS HERE
   ============================================================ */
   return (
-    <main className="relative min-h-screen text-white overflow-hidden bg-black">
+    <main className="relative min-h-screen text-white overflow-hidden">
 
-      {/* ---------- Poster Background ---------- */}
-      <div className="absolute inset-0 -z-10">
-        {/* FULL psychedelic rainbow bands */}
-        <div className="absolute inset-0 bg-gradient-to-b from-rose-500 via-orange-400 via-yellow-300 via-green-300 via-cyan-300 via-purple-400 to-fuchsia-500 opacity-40" />
-        {/* soft noise */}
+      {/* ========================================================
+           WAVY BONNAROO BACKGROUND
+      ======================================================== */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+
+        {/* Each layer = wavy rainbow band */}
+        <div className="absolute top-0 left-0 right-0 h-40 bg-pink-500 opacity-80 wave-1" />
+        <div className="absolute top-20 left-0 right-0 h-40 bg-orange-400 opacity-80 wave-2" />
+        <div className="absolute top-40 left-0 right-0 h-40 bg-yellow-300 opacity-80 wave-3" />
+        <div className="absolute top-60 left-0 right-0 h-40 bg-green-400 opacity-80 wave-4" />
+        <div className="absolute top-80 left-0 right-0 h-40 bg-cyan-400 opacity-80 wave-5" />
+        <div className="absolute top-[26rem] left-0 right-0 h-40 bg-blue-500 opacity-80 wave-6" />
+        <div className="absolute top-[34rem] left-0 right-0 h-40 bg-purple-500 opacity-80 wave-7" />
+        <div className="absolute top-[42rem] left-0 right-0 h-40 bg-fuchsia-500 opacity-80 wave-8" />
+
+        {/* Grain overlay */}
         <div className="absolute inset-0 noise-overlay opacity-20" />
       </div>
 
-      <div className="mx-auto max-w-6xl px-4 py-6 space-y-10">
+      {/* ------------------- Main Content ------------------- */}
+      <div className="mx-auto max-w-5xl px-4 py-10 space-y-12">
 
-        {/* ============================================================
-            VIDEO FIRST — FLOATING W/ RAINBOW HALO
-        ============================================================ */}
-        <div className="relative mx-auto w-full max-w-4xl">
-          <div className="absolute inset-0 -z-10 blur-3xl opacity-60 bg-gradient-to-r from-fuchsia-400 via-orange-300 to-yellow-300 rounded-3xl" />
-          <div className="rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+        {/* ========================================================
+             FLOATING VIDEO WITH RAINBOW HALO
+        ======================================================== */}
+        <div className="relative mx-auto w-full max-w-3xl">
+          <div className="absolute inset-0 -z-10 blur-3xl opacity-80 bg-gradient-to-r from-pink-400 via-orange-300 to-yellow-300 rounded-[2.5rem]" />
+          <div className="rounded-[2rem] overflow-hidden shadow-2xl border border-white/20">
             <HlsPlayer src={videoSrc} poster="/poster.jpg" />
           </div>
         </div>
 
-        {/* ---------- Stats Row ---------- */}
-        <div className="flex flex-wrap justify-center gap-3 text-sm font-semibold">
-          <div className="px-4 py-1 rounded-full bg-fuchsia-600/60 backdrop-blur-md">
+        {/* ========================================================
+            COLOR BADGES UNDER VIDEO
+        ======================================================== */}
+        <div className="flex flex-wrap justify-center gap-3 text-sm font-bold drop-shadow-xl">
+          <div className="px-4 py-1 rounded-full bg-pink-600/80 backdrop-blur">
             Holder: {seat?.holder_name ?? '—'}
           </div>
-          <div className="px-4 py-1 rounded-full bg-emerald-600/60 backdrop-blur-md">
-            Time Left: {countdown}
+          <div className="px-4 py-1 rounded-full bg-emerald-500/80 backdrop-blur">
+            Time: {countdown}
           </div>
-          <div className="px-4 py-1 rounded-full bg-cyan-600/60 backdrop-blur-md">
+          <div className="px-4 py-1 rounded-full bg-cyan-500/80 backdrop-blur">
             Price: {fmtUSD(seat?.current_price_cents)}
           </div>
         </div>
 
-        {/* ---------- Tagline ---------- */}
-        <p className="text-center text-base md:text-lg font-medium text-white/90">
-          In this moment — the mic belongs to whoever takes it.
+        {/* ========================================================
+            TAGLINE
+        ======================================================== */}
+        <p className="text-center text-lg font-semibold drop-shadow-lg">
+          A global mic. One voice at a time. Your moment.
         </p>
 
-        {/* ---------- Buttons ---------- */}
+        {/* ========================================================
+            BUTTONS
+        ======================================================== */}
         <div className="flex flex-wrap justify-center gap-4">
           <button
             onClick={buySeat}
             disabled={!!loadingAction}
-            className="px-8 py-3 rounded-2xl bg-gradient-to-r from-fuchsia-400 via-orange-300 to-yellow-300 text-black font-bold shadow-xl hover:scale-[1.03] transition">
-            {loadingAction === 'seat' ? 'Loading...' : 'Take the Mic'}
+            className="px-10 py-3 rounded-2xl bg-gradient-to-r from-fuchsia-400 via-orange-300 to-yellow-300 text-black font-extrabold shadow-xl hover:scale-[1.04] transition">
+            {loadingAction === 'seat' ? 'Loading…' : 'Take the Mic'}
           </button>
 
           <button
             onClick={() => tip(500)}
             disabled={!!loadingAction}
-            className="px-6 py-3 rounded-2xl bg-orange-400/80 backdrop-blur-md text-black font-semibold hover:scale-[1.03] transition">
+            className="px-6 py-3 rounded-2xl bg-orange-400 text-black font-bold shadow-lg hover:scale-[1.04] transition">
             Tip $5
           </button>
 
           <button
             onClick={() => tip(1000)}
             disabled={!!loadingAction}
-            className="px-6 py-3 rounded-2xl bg-yellow-300/80 backdrop-blur-md text-black font-semibold hover:scale-[1.03] transition">
+            className="px-6 py-3 rounded-2xl bg-yellow-300 text-black font-bold shadow-lg hover:scale-[1.04] transition">
             Tip $10
           </button>
         </div>
 
-        {/* ============================================================
-            CHAT + WALL
-        ============================================================ */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* ========================================================
+            CHAT + WALL SECTION (kept same, restyled)
+        ======================================================== */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-          {/* Chat */}
-          <div className="md:col-span-2 rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-4">
-            <h2 className="text-lg font-bold mb-2">Live Chat</h2>
+          {/* Chat Box */}
+          <div className="md:col-span-2 rounded-3xl border border-white/20 bg-black/40 backdrop-blur-xl p-5 shadow-xl">
+            <h2 className="text-xl font-bold mb-3 drop-shadow">Live Chat</h2>
             <Chat />
           </div>
 
           {/* Wall */}
-          <div className="rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-4">
-            <h2 className="text-lg font-bold mb-2">Wall of Holders</h2>
+          <div className="rounded-3xl border border-white/20 bg-black/40 backdrop-blur-xl p-5 shadow-xl">
+            <h2 className="text-xl font-bold mb-3 drop-shadow">Wall of Holders</h2>
             <Wall />
           </div>
 
@@ -236,22 +254,24 @@ function Chat() {
           </div>
         ))}
       </div>
+
       <input
-        className="mt-2 rounded-xl px-2 py-1 bg-black/50 border border-white/20"
+        className="mt-2 rounded-xl px-2 py-1 bg-black/40 border border-white/20"
         placeholder="name"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
+
       <div className="flex gap-2 mt-2">
         <input
-          className="flex-1 rounded-xl px-2 py-1 bg-black/50 border border-white/20"
+          className="flex-1 rounded-xl px-2 py-1 bg-black/40 border border-white/20"
           placeholder="message…"
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
         <button
           onClick={send}
-          className="rounded-xl px-4 bg-gradient-to-r from-fuchsia-400 to-orange-300 text-black font-semibold">
+          className="rounded-xl px-4 bg-gradient-to-r from-fuchsia-400 to-orange-300 text-black font-bold">
           Send
         </button>
       </div>
@@ -281,7 +301,7 @@ function Wall() {
       {entries.map((w: any) => (
         <div
           key={w.id}
-          className="rounded-xl border border-white/10 bg-white/10 p-3">
+          className="rounded-xl border border-white/20 bg-white/10 p-3">
           <div className="font-bold">{w.display_name}</div>
           <div className="opacity-70 text-xs">
             {new Date(w.started_at).toLocaleString()}
@@ -290,8 +310,8 @@ function Wall() {
       ))}
 
       {entries.length === 0 && (
-        <div className="rounded-xl border border-dashed border-white/20 p-4 text-center text-neutral-300 text-xs">
-          No holders yet — take the mic. 🎤
+        <div className="rounded-xl border border-dashed border-white/30 p-4 text-center text-xs opacity-80">
+          No holders yet — take the mic 🎤
         </div>
       )}
     </div>
