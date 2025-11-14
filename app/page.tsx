@@ -108,13 +108,60 @@ export default function Page() {
 
   return (
     <main className="relative min-h-screen overflow-hidden text-white">
-      {/* Purple background + rounded triangle texture */}
-<div className="absolute inset-0 -z-10 overflow-hidden">
-  {/* solid purple */}
-  <div className="absolute inset-0 bg-[#9B82FF]" />
-  {/* triangles (rounded) texture */}
-  <div className="absolute inset-0 triangles-rounded pointer-events-none" />
-</div>
+      {/* Purple background + giant overlapping triangle lines */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        {/* solid purple */}
+        <div className="absolute inset-0 bg-[#9B82FF]" />
+
+        {/* huge triangle outlines */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* triangle 1 */}
+          <svg
+            className="tw-tri tw-tri-1"
+            viewBox="0 0 100 100"
+            aria-hidden="true"
+          >
+            <path
+              d="M50 5 L95 95 L5 95 Z"
+              fill="none"
+              stroke="rgba(0,0,0,0.25)"
+              strokeWidth="3"
+              strokeLinejoin="round"
+            />
+          </svg>
+
+          {/* triangle 2 */}
+          <svg
+            className="tw-tri tw-tri-2"
+            viewBox="0 0 100 100"
+            aria-hidden="true"
+          >
+            <path
+              d="M50 5 L95 95 L5 95 Z"
+              fill="none"
+              stroke="rgba(0,0,0,0.2)"
+              strokeWidth="3"
+              strokeLinejoin="round"
+            />
+          </svg>
+
+          {/* triangle 3 */}
+          <svg
+            className="tw-tri tw-tri-3"
+            viewBox="0 0 100 100"
+            aria-hidden="true"
+          >
+            <path
+              d="M50 5 L95 95 L5 95 Z"
+              fill="none"
+              stroke="rgba(0,0,0,0.18)"
+              strokeWidth="2.5"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+      </div>
+
 
 
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 lg:flex-row lg:items-start lg:py-16">
