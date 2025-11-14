@@ -112,21 +112,24 @@ export default function Page() {
       {/* ========================================================
            WAVY BONNAROO BACKGROUND
       ======================================================== */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
+    {/* RAINBOW HALO BACKGROUND */}
+<div className="absolute inset-0 -z-10 overflow-hidden">
 
-        {/* Each layer = wavy rainbow band */}
-        <div className="absolute top-0 left-0 right-0 h-40 bg-pink-500 opacity-80 wave-1" />
-        <div className="absolute top-20 left-0 right-0 h-40 bg-orange-400 opacity-80 wave-2" />
-        <div className="absolute top-40 left-0 right-0 h-40 bg-yellow-300 opacity-80 wave-3" />
-        <div className="absolute top-60 left-0 right-0 h-40 bg-green-400 opacity-80 wave-4" />
-        <div className="absolute top-80 left-0 right-0 h-40 bg-cyan-400 opacity-80 wave-5" />
-        <div className="absolute top-[26rem] left-0 right-0 h-40 bg-blue-500 opacity-80 wave-6" />
-        <div className="absolute top-[34rem] left-0 right-0 h-40 bg-purple-500 opacity-80 wave-7" />
-        <div className="absolute top-[42rem] left-0 right-0 h-40 bg-fuchsia-500 opacity-80 wave-8" />
+  {/* Dark cosmic gradient base */}
+  <div className="absolute inset-0 bg-gradient-to-b from-black via-[#120019] via-[#1a0035] to-[#02020a]" />
 
-        {/* Grain overlay */}
-        <div className="absolute inset-0 noise-overlay opacity-20" />
-      </div>
+  {/* Massive rainbow halo behind video area */}
+  <div className="absolute top-[10%] left-1/2 -translate-x-1/2 h-[900px] w-[900px] rounded-full 
+                  bg-[conic-gradient(#ff4ecd,#ffa64d,#ffee55,#75ffb1,#4de6ff,#b57aff,#ff4ecd)] 
+                  opacity-35 blur-[130px]" />
+
+  {/* Subtle grain */}
+  <div className="absolute inset-0 noise-overlay opacity-25" />
+</div>
+
+
+
+
 
       {/* ------------------- Main Content ------------------- */}
       <div className="mx-auto max-w-5xl px-4 py-10 space-y-12">
