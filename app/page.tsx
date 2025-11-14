@@ -107,7 +107,8 @@ export default function Page() {
      UI
   ============================================================ */
   return (
-    <main className="relative min-h-screen text-white overflow-hidden bg-black">
+ <main className="relative min-h-screen text-white overflow-hidden bg-transparent">
+
 
       {/* ---------- Poster Background ---------- */}
       <div className="absolute inset-0 -z-10">
