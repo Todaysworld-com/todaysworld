@@ -18,12 +18,12 @@
     --foreground: #ededed;
   }
 }
-
 body {
-  background: var(--background);
+  background: transparent !important;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
 
 /* WAVY POSTER SHAPES */
 .wave-1 { clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 90%); }
