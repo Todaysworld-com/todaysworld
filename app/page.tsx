@@ -107,62 +107,18 @@ export default function Page() {
   const priceLabel = fmtUSD(seat?.current_price_cents ?? 500);
 
   return (
-    <main className="relative min-h-screen overflow-hidden text-white">
-      {/* Purple background + giant overlapping triangle lines */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        {/* solid purple */}
-        <div className="absolute inset-0 bg-[#9B82FF]" />
-
-        {/* huge triangle outlines */}
-        <div className="absolute inset-0 pointer-events-none">
-          {/* triangle 1 */}
-          <svg
-            className="tw-tri tw-tri-1"
-            viewBox="0 0 100 100"
-            aria-hidden="true"
-          >
-            <path
-              d="M50 5 L95 95 L5 95 Z"
-              fill="none"
-              stroke="rgba(0,0,0,0.25)"
-              strokeWidth="3"
-              strokeLinejoin="round"
-            />
-          </svg>
-
-          {/* triangle 2 */}
-          <svg
-            className="tw-tri tw-tri-2"
-            viewBox="0 0 100 100"
-            aria-hidden="true"
-          >
-            <path
-              d="M50 5 L95 95 L5 95 Z"
-              fill="none"
-              stroke="rgba(0,0,0,0.2)"
-              strokeWidth="3"
-              strokeLinejoin="round"
-            />
-          </svg>
-
-          {/* triangle 3 */}
-          <svg
-            className="tw-tri tw-tri-3"
-            viewBox="0 0 100 100"
-            aria-hidden="true"
-          >
-            <path
-              d="M50 5 L95 95 L5 95 Z"
-              fill="none"
-              stroke="rgba(0,0,0,0.18)"
-              strokeWidth="2.5"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
-      </div>
-
-
+    <main className="relative min-h-screen overflow-hidden bg-[#050509] text-white">
+      {/* Carrd-style triangle pattern background */}
+      <div
+        className="pointer-events-none fixed inset-0 -z-10 opacity-40"
+        style={{
+          backgroundImage:
+            'url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%20width%3D%22512%22%20height%3D%22512%22%20preserveAspectRatio%3D%22none%22%3E%20%3Cstyle%20type%3D%22text%2Fcss%22%3E%20path%20%7B%20fill%3A%20none%3B%20stroke%3A%20%23343136%3B%20stroke-width%3A%201.01px%3B%20%7D%20%3C%2Fstyle%3E%20%3Cpath%20vector-effect%3D%22non-scaling-stroke%22%20d%3D%22M111.2%2C81.7L-33.7%2C226.6c-13.9%2C13.9-36.5%2C13.9-50.5%2C0L-229.1%2C81.7%20c-22.5-22.5-6.6-60.9%2C25.2-60.9H86C117.7%2C20.7%2C133.7%2C59.2%2C111.2%2C81.7z%22%2F%3E%20%3Cpath%20vector-effect%3D%22non-scaling-stroke%22%20d%3D%22M366.8%2C338.3L221.9%2C483.2c-13.9%2C13.9-36.5%2C13.9-50.5%2C0L26.6%2C338.3%20c-22.5-22.5-6.6-60.9%2C25.2-60.9h289.8C373.4%2C277.4%2C389.3%2C315.8%2C366.8%2C338.3z%22%2F%3E%20%3Cpath%20vector-effect%3D%22non-scaling-stroke%22%20d%3D%22M40.6%2C423l-144.9-144.9c-13.9-13.9-13.9-36.5%2C0-50.5L40.6%2C82.8%20c22.5-22.5%2C60.9-6.6%2C60.9%2C25.2v289.8C101.5%2C429.6%2C63.1%2C445.5%2C40.6%2C423z%22%2F%3E%20%3Cpath%20vector-effect%3D%22non-scaling-stroke%22%20d%3D%22M296.3%2C679.7L151.4%2C534.8c-13.9-13.9-13.9-36.5%2C0-50.5l144.9-144.9%20c22.5-22.5%2C60.9-6.6%2C60.9%2C25.2v289.8C357.2%2C686.3%2C318.8%2C702.2%2C296.3%2C679.7z%22%2F%3E%20%3Cpath%20vector-effect%3D%22non-scaling-stroke%22%20d%3D%22M623.5%2C81.7L478.6%2C226.6c-13.9%2C13.9-36.5%2C13.9-50.5%2C0L283.2%2C81.7%20c-22.5-22.5-6.6-60.9%2C25.2-60.9h289.8C630%2C20.7%2C646%2C59.2%2C623.5%2C81.7z%22%2F%3E%20%3Cpath%20vector-effect%3D%22non-scaling-stroke%22%20d%3D%22M296.3%2C166.4L151.4%2C21.5c-13.9-13.9-13.9-36.5%2C0-50.5l144.9-144.9%20c22.5-22.5%2C60.9-6.6%2C60.9%2C25.2v289.8C357.2%2C173%2C318.8%2C188.9%2C296.3%2C166.4z%22%2F%3E%20%3Cpath%20vector-effect%3D%22non-scaling-stroke%22%20d%3D%22M552.9%2C423L408%2C278.2c-13.9-13.9-13.9-36.5%2C0-50.5L552.9%2C82.8%20c22.5-22.5%2C60.9-6.6%2C60.9%2C25.2v289.8C613.8%2C429.6%2C575.4%2C445.5%2C552.9%2C423z%22%2F%3E%3C%2Fsvg%3E")',
+          backgroundSize: '354px',
+          backgroundRepeat: 'repeat',
+          backgroundPosition: 'center',
+        }}
+      />
 
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 lg:flex-row lg:items-start lg:py-16">
         {/* LEFT: video + controls */}
@@ -183,7 +139,7 @@ export default function Page() {
 
           {/* stats row */}
           <div className="flex flex-wrap gap-3 text-xs font-medium">
-            <div className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 backdrop-blur">
+            <div className="flex items-center gap-2 rounded-full bg.white/10 px-4 py-1 backdrop-blur">
               <span className="uppercase tracking-[0.18em] text-neutral-300">Holder</span>
               <span className="text-sm font-semibold text-white">{holderLabel}</span>
             </div>
@@ -229,7 +185,7 @@ export default function Page() {
         </section>
 
         {/* RIGHT: chat + wall */}
-        <section className="flex w-full max-w-md flex-1 flex-col gap-5">
+        <section className="flex w.full max-w-md flex-1 flex-col gap-5">
           <div className="rounded-3xl border border-white/12 bg-black/60 p-4 shadow-[0_20px_60px_rgba(0,0,0,0.8)] backdrop-blur-xl">
             <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-200">
               Live Chat
@@ -290,7 +246,7 @@ function Chat() {
   };
 
   return (
-    <div className="flex h-[360px] flex-col rounded-2xl border border-white/10 bg-black/60 p-3 text-sm">
+    <div className="flex h-[360px] flex-col rounded-2xl border border.white/10 bg-black/60 p-3 text-sm">
       <div className="flex-1 space-y-1 overflow-y-auto pr-1">
         {messages.map((m: any) => {
           const isTip = !!m.is_tip;
@@ -363,4 +319,3 @@ function Wall() {
     </div>
   );
 }
-

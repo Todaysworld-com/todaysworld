@@ -18,36 +18,9 @@
     --foreground: #ededed;
   }
 }
+
 body {
   background: transparent !important;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Giant overlapping triangle line art */
-.tw-tri {
-  position: absolute;
-  width: 180vmax;
-  height: 180vmax;
-}
-
-/* one huge triangle drifting off the page */
-.tw-tri-1 {
-  top: -70vmax;
-  left: -40vmax;
-  transform: rotate(-8deg);
-}
-
-/* second one, offset and overlapping */
-.tw-tri-2 {
-  top: -20vmax;
-  right: -60vmax;
-  transform: rotate(14deg);
-}
-
-/* third one lower, crossing the others */
-.tw-tri-3 {
-  bottom: -65vmax;
-  left: -30vmax;
-  transform: rotate(-18deg);
 }
