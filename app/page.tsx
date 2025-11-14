@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { supabaseBrowser } from '../lib/supabaseBrowser';
 import HlsPlayer from './components/HlsPlayer';
 
-/* ------------ Helpers ------------ */
+/* ---------- Helpers ---------- */
 const fmtUSD = (cents?: number | null) =>
   cents == null
     ? '—'
@@ -30,7 +30,7 @@ export default function Page() {
   const fallback = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
   const videoSrc = useMemo(() => seat?.hls_url || fallback, [seat?.hls_url]);
 
-  /* ----------------- Realtime seat_state ----------------- */
+  /* ---------- REALTIME seat_state ---------- */
   useEffect(() => {
     const sb = supabaseBrowser();
 
@@ -48,7 +48,7 @@ export default function Page() {
     return () => void sb.removeChannel(ch);
   }, []);
 
-  /* ----------------- Countdown ----------------- */
+  /* ---------- Countdown ---------- */
   useEffect(() => {
     if (!seat?.expires_at) return setCountdown('—');
     const tick = () => {
@@ -65,7 +65,7 @@ export default function Page() {
     return () => clearInterval(id);
   }, [seat?.expires_at]);
 
-  /* ----------------- Checkout ----------------- */
+  /* ---------- Checkouts ---------- */
   async function buySeat() {
     try {
       setLoadingAction('seat');
@@ -104,108 +104,87 @@ export default function Page() {
   }
 
   /* ============================================================
-     UI STARTS HERE
+     UI
   ============================================================ */
   return (
-    <main className="relative min-h-screen text-white overflow-hidden">
+    <main className="relative min-h-screen text-white overflow-hidden bg-black">
 
-      {/* ========================================================
-           WAVY BONNAROO BACKGROUND
-      ======================================================== */}
-    {/* RAINBOW HALO BACKGROUND */}
-<div className="absolute inset-0 -z-10 overflow-hidden">
+      {/* ---------- Poster Background ---------- */}
+      <div className="absolute inset-0 -z-10">
+        {/* FULL psychedelic rainbow bands */}
+        <div className="absolute inset-0 bg-gradient-to-b from-rose-500 via-orange-400 via-yellow-300 via-green-300 via-cyan-300 via-purple-400 to-fuchsia-500 opacity-40" />
+        {/* soft noise */}
+        <div className="absolute inset-0 noise-overlay opacity-20" />
+      </div>
 
-  {/* Dark cosmic gradient base */}
-  <div className="absolute inset-0 bg-gradient-to-b from-black via-[#120019] via-[#1a0035] to-[#02020a]" />
+      <div className="mx-auto max-w-6xl px-4 py-6 space-y-10">
 
-  {/* Massive rainbow halo behind video area */}
-  <div className="absolute top-[10%] left-1/2 -translate-x-1/2 h-[900px] w-[900px] rounded-full 
-                  bg-[conic-gradient(#ff4ecd,#ffa64d,#ffee55,#75ffb1,#4de6ff,#b57aff,#ff4ecd)] 
-                  opacity-35 blur-[130px]" />
-
-  {/* Subtle grain */}
-  <div className="absolute inset-0 noise-overlay opacity-25" />
-</div>
-
-
-
-
-
-      {/* ------------------- Main Content ------------------- */}
-      <div className="mx-auto max-w-5xl px-4 py-10 space-y-12">
-
-        {/* ========================================================
-             FLOATING VIDEO WITH RAINBOW HALO
-        ======================================================== */}
-        <div className="relative mx-auto w-full max-w-3xl">
-          <div className="absolute inset-0 -z-10 blur-3xl opacity-80 bg-gradient-to-r from-pink-400 via-orange-300 to-yellow-300 rounded-[2.5rem]" />
-          <div className="rounded-[2rem] overflow-hidden shadow-2xl border border-white/20">
+        {/* ============================================================
+            VIDEO FIRST — FLOATING W/ RAINBOW HALO
+        ============================================================ */}
+        <div className="relative mx-auto w-full max-w-4xl">
+          <div className="absolute inset-0 -z-10 blur-3xl opacity-60 bg-gradient-to-r from-fuchsia-400 via-orange-300 to-yellow-300 rounded-3xl" />
+          <div className="rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
             <HlsPlayer src={videoSrc} poster="/poster.jpg" />
           </div>
         </div>
 
-        {/* ========================================================
-            COLOR BADGES UNDER VIDEO
-        ======================================================== */}
-        <div className="flex flex-wrap justify-center gap-3 text-sm font-bold drop-shadow-xl">
-          <div className="px-4 py-1 rounded-full bg-pink-600/80 backdrop-blur">
+        {/* ---------- Stats Row ---------- */}
+        <div className="flex flex-wrap justify-center gap-3 text-sm font-semibold">
+          <div className="px-4 py-1 rounded-full bg-fuchsia-600/60 backdrop-blur-md">
             Holder: {seat?.holder_name ?? '—'}
           </div>
-          <div className="px-4 py-1 rounded-full bg-emerald-500/80 backdrop-blur">
-            Time: {countdown}
+          <div className="px-4 py-1 rounded-full bg-emerald-600/60 backdrop-blur-md">
+            Time Left: {countdown}
           </div>
-          <div className="px-4 py-1 rounded-full bg-cyan-500/80 backdrop-blur">
+          <div className="px-4 py-1 rounded-full bg-cyan-600/60 backdrop-blur-md">
             Price: {fmtUSD(seat?.current_price_cents)}
           </div>
         </div>
 
-        {/* ========================================================
-            TAGLINE
-        ======================================================== */}
-        <p className="text-center text-lg font-semibold drop-shadow-lg">
-          A global mic. One voice at a time. Your moment.
+        {/* ---------- Tagline ---------- */}
+        <p className="text-center text-base md:text-lg font-medium text-white/90">
+          In this moment — the mic belongs to whoever takes it.
         </p>
 
-        {/* ========================================================
-            BUTTONS
-        ======================================================== */}
+        {/* ---------- Buttons ---------- */}
         <div className="flex flex-wrap justify-center gap-4">
           <button
             onClick={buySeat}
             disabled={!!loadingAction}
-            className="px-10 py-3 rounded-2xl bg-gradient-to-r from-fuchsia-400 via-orange-300 to-yellow-300 text-black font-extrabold shadow-xl hover:scale-[1.04] transition">
-            {loadingAction === 'seat' ? 'Loading…' : 'Take the Mic'}
+            className="px-8 py-3 rounded-2xl bg-gradient-to-r from-fuchsia-400 via-orange-300 to-yellow-300 text-black font-bold shadow-xl hover:scale-[1.03] transition">
+            {loadingAction === 'seat' ? 'Loading...' : 'Take the Mic'}
           </button>
 
           <button
             onClick={() => tip(500)}
             disabled={!!loadingAction}
-            className="px-6 py-3 rounded-2xl bg-orange-400 text-black font-bold shadow-lg hover:scale-[1.04] transition">
+            className="px-6 py-3 rounded-2xl bg-orange-400/80 backdrop-blur-md text-black font-semibold hover:scale-[1.03] transition">
             Tip $5
           </button>
 
           <button
             onClick={() => tip(1000)}
             disabled={!!loadingAction}
-            className="px-6 py-3 rounded-2xl bg-yellow-300 text-black font-bold shadow-lg hover:scale-[1.04] transition">
+            className="px-6 py-3 rounded-2xl bg-yellow-300/80 backdrop-blur-md text-black font-semibold hover:scale-[1.03] transition">
             Tip $10
           </button>
         </div>
 
-        {/* ========================================================
-            CHAT + WALL SECTION (kept same, restyled)
-        ======================================================== */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* ============================================================
+            CHAT + WALL
+        ============================================================ */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-          {/* Chat Box */}
-          <div className="md:col-span-2 rounded-3xl border border-white/20 bg-black/40 backdrop-blur-xl p-5 shadow-xl">
-            <h2 className="text-xl font-bold mb-3 drop-shadow">Live Chat</h2>
+          {/* Chat */}
+          <div className="md:col-span-2 rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-4">
+            <h2 className="text-lg font-bold mb-2">Live Chat</h2>
             <Chat />
           </div>
 
           {/* Wall */}
-          <div className="rounded-3xl border border-white/20 bg-black/40 backdrop-blur-xl p-5 shadow-xl">
-            <h2 className="text-xl font-bold mb-3 drop-shadow">Wall of Holders</h2>
+          <div className="rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-4">
+            <h2 className="text-lg font-bold mb-2">Wall of Holders</h2>
             <Wall />
           </div>
 
@@ -257,24 +236,22 @@ function Chat() {
           </div>
         ))}
       </div>
-
       <input
-        className="mt-2 rounded-xl px-2 py-1 bg-black/40 border border-white/20"
+        className="mt-2 rounded-xl px-2 py-1 bg-black/50 border border-white/20"
         placeholder="name"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
-
       <div className="flex gap-2 mt-2">
         <input
-          className="flex-1 rounded-xl px-2 py-1 bg-black/40 border border-white/20"
+          className="flex-1 rounded-xl px-2 py-1 bg-black/50 border border-white/20"
           placeholder="message…"
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
         <button
           onClick={send}
-          className="rounded-xl px-4 bg-gradient-to-r from-fuchsia-400 to-orange-300 text-black font-bold">
+          className="rounded-xl px-4 bg-gradient-to-r from-fuchsia-400 to-orange-300 text-black font-semibold">
           Send
         </button>
       </div>
@@ -304,7 +281,7 @@ function Wall() {
       {entries.map((w: any) => (
         <div
           key={w.id}
-          className="rounded-xl border border-white/20 bg-white/10 p-3">
+          className="rounded-xl border border-white/10 bg-white/10 p-3">
           <div className="font-bold">{w.display_name}</div>
           <div className="opacity-70 text-xs">
             {new Date(w.started_at).toLocaleString()}
@@ -313,8 +290,8 @@ function Wall() {
       ))}
 
       {entries.length === 0 && (
-        <div className="rounded-xl border border-dashed border-white/30 p-4 text-center text-xs opacity-80">
-          No holders yet — take the mic 🎤
+        <div className="rounded-xl border border-dashed border-white/20 p-4 text-center text-neutral-300 text-xs">
+          No holders yet — take the mic. 🎤
         </div>
       )}
     </div>
