@@ -44,12 +44,9 @@ body {
   mix-blend-mode: multiply;
 }
 .triangles-rounded {
-  background-image:
-    linear-gradient(150deg, rgba(255,255,255,0.22) 12%, transparent 12%),
-    linear-gradient(210deg, rgba(255,255,255,0.22) 12%, transparent 12%),
-    linear-gradient(330deg, rgba(255,255,255,0.16) 12%, transparent 12%);
-  background-size: 40px 40px;
-  background-position: 0 0, 0 0, 0 0;
-  opacity: 0.35;
-  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cpath d='M40 8 L72 64 H8 Z' fill='none' stroke='rgba(0,0,0,0.35)' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 120px 120px;
+  opacity: 0.45;
+  mix-blend-mode: multiply;
 }
+
